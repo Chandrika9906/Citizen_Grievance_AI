@@ -1,0 +1,52 @@
+# Dataset files (too large for GitHub)
+ai-service/data/og_311_ServiceRequest_2021.csv
+ai-service/data/*.csv
+
+# Model files (can be regenerated)
+ai-service/models/saved/*.pkl
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+*.egg-info/
+
+# Data files
+ai-service/data/complaints_history.json
+ai-service/data/recent_complaints.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node modules
+node_modules/
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# YOLO
+runs/
+datasets/
+*.pt
+
+# VS Code
+.vscode/
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db

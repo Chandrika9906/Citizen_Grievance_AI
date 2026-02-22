@@ -1,0 +1,82 @@
+# YOLOv8 Image Classification Setup Guide
+# For Windows 11 + RTX 3050 + CUDA 13.0
+
+## STEP 1: Install Python 3.12 (Portable - Won't affect Python 3.13)
+
+# Download Python 3.12.8 embeddable package
+# Go to: https://www.python.org/downloads/release/python-3128/
+# Download: Windows embeddable package (64-bit)
+# Extract to: D:\Blaze2026\python312
+
+# OR use this PowerShell command:
+# Invoke-WebRequest -Uri "https://www.python.org/ftp/python/3.12.8/python-3.12.8-embed-amd64.zip" -OutFile "python312.zip"
+# Expand-Archive -Path "python312.zip" -DestinationPath "D:\Blaze2026\python312"
+
+## STEP 2: Create Virtual Environment with Python 3.12
+
+# Navigate to project
+cd D:\Blaze2026\Citizen_Grievance_AI\ai-service
+
+# Create venv with Python 3.12
+D:\Blaze2026\python312\python.exe -m venv yolo_env
+
+# Activate virtual environment
+.\yolo_env\Scripts\Activate.ps1
+
+# If you get execution policy error, run:
+# Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+## STEP 3: Install PyTorch with CUDA 11.8 (Compatible with RTX 3050)
+
+# Upgrade pip first
+python -m pip install --upgrade pip
+
+# Install PyTorch with CUDA 11.8 (most stable for RTX 3050)
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+
+## STEP 4: Verify CUDA is working
+
+python -c "import torch; print(f'PyTorch: {torch.__version__}'); print(f'CUDA Available: {torch.cuda.is_available()}'); print(f'CUDA Version: {torch.version.cuda}'); print(f'GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else \"None\"}')"
+
+# Expected output:
+# PyTorch: 2.x.x+cu118
+# CUDA Available: True
+# CUDA Version: 11.8
+# GPU: NVIDIA GeForce RTX 3050
+
+## STEP 5: Install Ultralytics YOLOv8
+
+pip install ultralytics opencv-python pillow
+
+## STEP 6: Verify YOLOv8 installation
+
+python -c "from ultralytics import YOLO; print('YOLOv8 installed successfully!')"
+
+## STEP 7: Test GPU with YOLOv8
+
+python -c "from ultralytics import YOLO; import torch; model = YOLO('yolov8n.pt'); print(f'Model device: {next(model.model.parameters()).device}')"
+
+## STEP 8: Create dataset structure (see setup_yolo_dataset.py)
+
+## STEP 9: Train model (see train_yolo.py)
+
+## STEP 10: Integrate into Flask (see updated image_classifier.py)
+
+# ============================================
+# TROUBLESHOOTING
+# ============================================
+
+# If CUDA not available:
+# 1. Check NVIDIA driver: nvidia-smi
+# 2. Reinstall PyTorch with correct CUDA version
+# 3. Restart computer
+
+# If out of memory during training:
+# - Reduce batch size (batch=8 or batch=4)
+# - Use smaller model (yolov8n instead of yolov8s)
+# - Reduce image size (imgsz=320 instead of 640)
+
+# If training too slow:
+# - Verify GPU is being used: watch nvidia-smi
+# - Close other GPU applications
+# - Use mixed precision: amp=True
